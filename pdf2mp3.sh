@@ -77,9 +77,11 @@ function pdf_to_ascii()
 function combine_audio_chunks()
 {
         local in_file="$1"
+        rm -f $tmp_dir_prefix/$file_hash/_output.mp3 $tmp_dir_prefix/$file_hash/_output_MP3WRAP.mp3
         local bf=$(basename -s.pdf "$in_file")
         mp3wrap $tmp_dir_prefix/$file_hash/_output.mp3 $tmp_dir_prefix/$file_hash/${prefix}*.mp3
-        mv -f $tmp_dir_prefix/$file_hash/_output_MP3WRAP.mp3 $out_dir_prefix/${bf}.mp3
+        echo "Producing $out_dir_prefix/${bf}.mp3"
+        mv -f $tmp_dir_prefix/$file_hash/_output_MP3WRAP.mp3 "$out_dir_prefix/${bf}.mp3"
 }
 
 pdf_to_ascii "$pdf_file"
