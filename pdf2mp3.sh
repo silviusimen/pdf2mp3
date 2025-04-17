@@ -70,7 +70,7 @@ function pdf_to_ascii()
                 echo "Converting $1 to ascii"
                 ps2ascii "$1" | tr -s '[:space:]' > ${ascii_file} 
                 echo "Splitting text into chunks of $lines lines"
-                cat ${ascii_file} | split -l $lines --numeric-suffixes=1 - $tmp_dir_prefix/$file_hash/${prefix}
+                cat ${ascii_file} | split -l $lines --suffix-length=4 --numeric-suffixes=1 - $tmp_dir_prefix/$file_hash/${prefix}
         fi
 }
 
@@ -85,7 +85,19 @@ function combine_audio_chunks()
 }
 
 pdf_to_ascii "$pdf_file"
+
+function asci_to_audio_loop()
+{
+for i in `seq 1 23` ; do 
+    ascii_to_audio "$pdf_file"
+    echo -n "Sleeping for 1 hour : "
+    date
+    sleep 1h
+done
+}
+
 ascii_to_audio "$pdf_file"
+#asci_to_audio_loop
 
 remaining_parts=$(get_list_of_parts | wc -w)
 if [ "$remaining_parts" == "0" ] ; then
